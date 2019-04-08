@@ -8,7 +8,7 @@ RUN yum install -y java-1.8.0-openjdk-headless \
     java-1.8.0-openjdk-devel
 
 # Install Hadoop
-RUN yum install -y wget
+RUN yum install -y wget vim
 RUN wget https://www-eu.apache.org/dist/hadoop/common/hadoop-2.8.5/hadoop-2.8.5.tar.gz && tar -xzf hadoop-2.8.5.tar.gz && mv hadoop-2.8.5 hadoop
 
 ## ssh and net-tools
@@ -17,6 +17,8 @@ RUN mkdir /root/.ssh && chmod 700 /root/.ssh
 COPY ./data/id_rsa /root/.ssh
 COPY ./data/id_rsa.pub /root/.ssh
 RUN chmod 600 /root/.ssh/id_rsa && chmod 644 /root/.ssh/id_rsa.pub
+COPY ./data/authorized_keys /root/.ssh/authorized_keys
+RUN chmod 600 /root/.ssh/authorized_keys
 
 # Hadoop Conf
 RUN mkdir -p /etc/hadoop/conf && mkdir /root/data
