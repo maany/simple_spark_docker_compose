@@ -1,0 +1,48 @@
+version: '3'
+services:
+  node-master:
+    build: ./hadoop_spark_master
+    container_name: node-master
+    privileged: true
+    command: /bin/bash
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      - "ENABLE_INIT_DAEMON=false"
+    networks:
+      spark_simple:
+        ipv4_address: 192.0.2.11
+        aliases:
+          - node-master
+
+  node-1:
+    build: ./hadoop_spark_node
+    container_name: node-1
+    privileged: true
+    command: /bin/bash
+    networks:
+      spark_simple:
+        ipv4_address: 192.0.2.12
+        aliases:
+          - node-1
+  
+  node-2:
+    build: ./hadoop_spark_node
+    container_name: node-2
+    privileged: true
+    command: /bin/bash
+    networks:
+      spark_simple:
+        ipv4_address: 192.0.2.13
+        aliases:
+          - node-2
+
+
+networks:
+  spark_simple:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.0.2.0/24
