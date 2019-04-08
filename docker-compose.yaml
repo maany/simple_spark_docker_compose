@@ -1,42 +1,63 @@
 version: '3'
 services:
   node-master:
-    build: ./hadoop_spark_master
+    build: ./NameNode_ResourceManager
     container_name: node-master
     privileged: true
-    command: /bin/bash
+    command: /usr/sbin/init
+    environment:
+      - "JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre/"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ./NameNode_ResourceManager/data:/data
     ports:
       - "8080:8080"
       - "7077:7077"
-    environment:
-      - "ENABLE_INIT_DAEMON=false"
     networks:
       spark_simple:
         ipv4_address: 192.0.2.11
         aliases:
           - node-master
+          - node-1:node-master
+          - node-2:node-master
 
   node-1:
-    build: ./hadoop_spark_node
+    build: ./Worker
     container_name: node-1
     privileged: true
-    command: /bin/bash
+    command: /usr/sbin/init
+    environment:
+      - "JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre/"
+      - "PATH=/root/hadoop/bin:/root/hadoop/sbin:$PATH"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ./Worker/data:/data
     networks:
       spark_simple:
         ipv4_address: 192.0.2.12
         aliases:
           - node-1
+          - node-master:node-1
+          - node-2:node-1
   
   node-2:
-    build: ./hadoop_spark_node
+    build: ./Worker
     container_name: node-2
     privileged: true
-    command: /bin/bash
+    command: /usr/sbin/init
+    environment:
+      - "JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre/"
+      - "PATH=/root/hadoop/bin:/root/hadoop/sbin:$PATH"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ./Worker/data:/data
     networks:
       spark_simple:
         ipv4_address: 192.0.2.13
         aliases:
           - node-2
+          - node-master:node-1
+          - node-2:node-1
 
 
 networks:
