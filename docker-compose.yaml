@@ -7,7 +7,10 @@ services:
     command: /usr/sbin/init
     environment:
       - "JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre"
-      - "PATH=/root/hadoop/bin:/root/hadoop/sbin:/usr/sue/sbin:/usr/sue/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PATH=/root/spark/bin:/root/hadoop/bin:/root/hadoop/sbin:/usr/sue/sbin:/usr/sue/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HADOOP_CONF_DIR=/root/hadoop/etc/hadoop"
+      - "SPARK_HOME=/root/hadoop/spark"
+      - "LD_LIBRARY_PATH=/root/hadoop/lib/native:$LD_LIBRARY_PATH"    
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
       - ./NameNode_ResourceManager/data:/data
@@ -16,6 +19,7 @@ services:
       - "7077:7077"
       - "50070:50070"
       - "8088:8088"
+      - "18080:18080"
     networks:
       spark_simple:
         ipv4_address: 192.0.2.11
@@ -31,7 +35,10 @@ services:
     command: /usr/sbin/init
     environment:
       - "JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre"
-      - "PATH=/root/hadoop/bin:/root/hadoop/sbin:/usr/sue/sbin:/usr/sue/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PATH=/root/spark/bin:/root/hadoop/bin:/root/hadoop/sbin:/usr/sue/sbin:/usr/sue/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HADOOP_CONF_DIR=/root/hadoop/etc/hadoop"
+      - "SPARK_HOME=/root/hadoop/spark"
+      - "LD_LIBRARY_PATH=/root/hadoop/lib/native:$LD_LIBRARY_PATH" 
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
       - ./Worker/data:/data
@@ -50,7 +57,10 @@ services:
     command: /usr/sbin/init
     environment:
       - "JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre"
-      - "PATH=/root/hadoop/bin:/root/hadoop/sbin:/usr/sue/sbin:/usr/sue/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PATH=/root/spark/bin:/root/hadoop/bin:/root/hadoop/sbin:/usr/sue/sbin:/usr/sue/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HADOOP_CONF_DIR=/root/hadoop/etc/hadoop"
+      - "SPARK_HOME=/root/hadoop/spark"
+      - "LD_LIBRARY_PATH=/root/hadoop/lib/native:$LD_LIBRARY_PATH" 
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
       - ./Worker/data:/data

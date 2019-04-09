@@ -6,6 +6,10 @@ cp /data/hdfs-site.xml /root/hadoop/etc/hadoop/
 cp /data/mapred-site.xml /root/hadoop/etc/hadoop/
 cp -f /data/yarn-site.xml /root/hadoop/etc/hadoop/
 cp -f /data/slaves /root/hadoop/etc/hadoop/
+
+echo "Copying spark config files"
+cp /data/spark-defaults.conf /root/hadoop/spark/conf/
+
 echo "Formatting HDFS"
 hdfs namenode -format
 
@@ -32,5 +36,11 @@ wget -O /books/holmes.txt https://www.gutenberg.org/ebooks/1661.txt.utf-8
 wget -O /books/frankenstein.txt https://www.gutenberg.org/ebooks/84.txt.utf-8
 hdfs dfs -mkdir -p /user/maany/books
 hdfs dfs -put /books/alice.txt /books/holmes.txt /books/frankenstein.txt /user/maany/books
+
+echo "Creating spark-logs hdfs directory"
+hdfs dfs -mkdir /spark-logs
+
+echo "Start Spark History Server"
+$SPARK_HOME/sbin/start-history-server.sh
 
 echo "All Done!"

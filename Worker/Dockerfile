@@ -10,6 +10,11 @@ RUN yum install -y java-1.8.0-openjdk-headless \
 RUN yum install -y wget vim
 RUN wget https://www-eu.apache.org/dist/hadoop/common/hadoop-2.8.5/hadoop-2.8.5.tar.gz && tar -xzf hadoop-2.8.5.tar.gz && mv hadoop-2.8.5 hadoop
 
+# Install Spark
+RUN wget https://www-eu.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz && \
+    tar -xzf /root/spark-2.4.1-bin-hadoop2.7.tgz --directory /root/hadoop/ &&\
+    mv /root/hadoop/spark-2.4.1-bin-hadoop2.7 /root/hadoop/spark
+
 # ssh and net-tools
 RUN yum -y install iproute openssh openssh-server openssh-clients openssl-libs net-tools;yum clean all;
 RUN mkdir /root/.ssh && chmod 700 /root/.ssh
